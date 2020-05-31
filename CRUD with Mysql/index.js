@@ -24,7 +24,7 @@ var dbConn = mysql.createConnection({
 dbConn.connect();
 
 
-////-----------------------------///////////////
+////-----------------------------////////////////
 app.get('/',function(req,res){
     return res.send({error:true,message:'hellotej'})
 })
