@@ -81,6 +81,18 @@ app.put('/update',function(req,res){
 });
 
 ///listen
+app.post('/deleteuser',function(req,res){
+
+    let id = req.body.id;
+     if(!id){
+        return res.status(4000).send({error:true,message:'Please Provide Information'});
+    }
+    dbConn.query("delete from info where id=?",id,function(error,results,fields){
+   if(error) throw error;
+   return res.send({ error:false,data:results,message:"deleted recorded"});        
+    
+});
+});
 
 
 app.listen(3000,function (){
