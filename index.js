@@ -45,5 +45,27 @@ router.put('/updatedata/:Id',function(req,res){
 
 })
 
+router.delete('/deletedata/:Id',function(req,res){
+    getindextodelete=-1;
+    console.log(req.params.Id); 
+    if(req.params.Id){
+        _und.each(jsondata,function(ele,index){
+            if(ele.Id==req.params.Id){
+                getindextodelete=index;
+            }
+        })
+     if(getindextodelete>-1)
+    {
+        jsondata.splice(getindextodelete,2);
+    }
+    res.json(jsondata);
+}
+else{
+    console.log("invalid delete input");
+}
+
+   
+})
+
 app.use('/api',router);
 app.listen(port);
