@@ -1,2 +1,1 @@
-git remote add origin https://github.com/TejsinghDhaosriya/CRUD-WITH-MYSQL.git
-git push -u origin master
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/0f11c7fda592369a2e87)
