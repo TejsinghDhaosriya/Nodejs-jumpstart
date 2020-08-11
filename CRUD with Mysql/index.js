@@ -6,7 +6,7 @@ var bodyParser  = require('body-parser');
 var cors = require('cors');
 
 var mysql = require('mysql');
-
+let PORT = 3000
 app.use(bodyParser.json());
 app.use(cors());
 app.use(bodyParser.urlencoded({
@@ -24,41 +24,41 @@ var dbConn = mysql.createConnection({
 dbConn.connect();
 
 
-////-----------------------------////////////////
 app.get('/',function(req,res){
-    return res.send({error:true,message:'hellotej'})
+    return res.send({error:true,message:'Hello Tej!'})
 })
 //retrive all users 
-app.get('/information',function(req,res){
+app.get('/getusers',function(req,res){
     dbConn.query('Select * FROM info',function(error,results,fields){
         if(error) throw error;
-        return res.send({error:false,data:results,message:'Complete Data'});
+        return res.send({error:false,data:results,message:'All User Data'});
     });
 });
 
 //Retrieve user with id
-app.get('/mydata/:Id',function(req,res){
-  console.log('0000000000000')
+app.get('/getuser/:Id',function(req,res){
+  
     let id = req.params.Id;
+    console.log(id)
     
     if(!id){
         return res.status(400).send({error:true,message:'Please Provide Id'});
     }
     dbConn.query('select * from info where id=?',id,function(error,results,fields){
         if(error) throw error;
-        return res.send({error:false,data:results[0],message:"Information by Id"});
+        return res.send({error:false,data:results,message:"Information by Id"});
     });
 });
 //Add a new Record 
 app.post('/adduser',function(req,res){
 
+    let id = req.body.id;
     let name = req.body.name;
     let location = req.body.location;
-    console.log(name+"wwwwwwwwwww"+location);
     if(!name && !location){
         return res.status(4000).send({error:true,message:'Please Provide Information'});
     }
-    dbConn.query("insert Into info(name,location) value(?,?)",[name,location],function(error,results,fields){
+    dbConn.query("insert Into info(id,name,location) value(?,?,?)",[id,name,location],function(error,results,fields){
    if(error) throw error;
    return res.send({ error:false,data:results,message:"added recorded"});        
     
@@ -66,8 +66,7 @@ app.post('/adduser',function(req,res){
 });
 
 //upate a record
-app.put('/update',function(req,res){
-    console.log("dddddddddddddddddddddddddddd");
+app.put('/updateuser',function(req,res){
     let id = req.body.id;
     let name = req.body.name;
     let location = req.body.location;
@@ -81,22 +80,22 @@ app.put('/update',function(req,res){
 });
 
 ///listen
-app.post('/deleteuser',function(req,res){
+app.delete('/deleteuser/:id',function(req,res){
 
-    let id = req.body.id;
+    let id = req.params.id;
      if(!id){
         return res.status(4000).send({error:true,message:'Please Provide Information'});
     }
     dbConn.query("delete from info where id=?",id,function(error,results,fields){
    if(error) throw error;
-   return res.send({ error:false,data:results,message:"deleted recorded"});        
+   return res.send({ error:false,data:results,message:"User Removed"});        
     
 });
 });
 
 
-app.listen(3000,function (){
-  console.log("node is running on 30000ww");
+app.listen(PORT,function (){
+  console.log(`Node is running on ${PORT}`);
 } 
     
 )
